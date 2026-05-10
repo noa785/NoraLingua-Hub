@@ -39,3 +39,14 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+/src/generated/prisma
+
+
+# Personal secrets (do not commit)
+noralingua-secrets.txt
+*-secrets.txt
+
+# Prisma local dev database (if using local Postgres)
+prisma/dev.db
+prisma/dev.db-journal

@@ -1,0 +1,325 @@
+/*
+  NoraLingua Hub - Database Schema
+  Defines all tables, relations, and indexes for the platform.
+  Connection URLs live in prisma.config.ts (Prisma 7).
+  Run "npx prisma migrate dev" after editing to apply changes.
+*/
+
+generator client {
+  provider        = "prisma-client-js"
+  output          = "../src/generated/prisma"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ENUMS
+
+enum UserRole {
+  STUDENT
+  ADMIN
+}
+
+enum CefrLevel {
+  A1
+  A2
+  B1
+  B2
+  C1
+  C2
+}
+
+enum PurposeKey {
+  JOB
+  TRAVEL
+  UNIVERSITY
+  IELTS
+  BUSINESS
+  GENERAL
+}
+
+enum SkillType {
+  READING
+  LISTENING
+  WRITING
+  SPEAKING
+}
+
+enum QuestionType {
+  MULTIPLE_CHOICE
+  SHORT_ANSWER
+}
+
+enum ClassStatus {
+  SCHEDULED
+  COMPLETED
+  CANCELLED
+  NO_SHOW
+}
+
+enum RubricMode {
+  IELTS
+  EMAIL
+  POSTCARD
+  GENERAL
+}
+
+// USERS AND AUTHENTICATION
+
+model User {
+  id                 String      @id @default(uuid())
+  email              String      @unique
+  fullName           String
+  role               UserRole    @default(STUDENT)
+  level              CefrLevel?
+  purpose            PurposeKey?
+  targetSkill        SkillType?
+  onboardedAt        DateTime?
+  assignedTeacherId  String?
+  createdAt          DateTime    @default(now())
+  updatedAt          DateTime    @updatedAt
+
+  // Relations
+  progress         Progress[]
+  submissions      Submission[]
+  scheduledClasses ScheduledClass[]
+  speakingBookings SpeakingBooking[]
+  assignedTeacher  Teacher?         @relation("AssignedTeacher", fields: [assignedTeacherId], references: [id])
+
+  @@index([email])
+  @@index([role])
+  @@index([assignedTeacherId])
+}
+
+// REFERENCE TABLES (seeded once, rarely changed)
+
+model Level {
+  id          String    @id @default(uuid())
+  key         CefrLevel @unique
+  name        String              // e.g. "Beginner"
+  description String
+  sortOrder   Int
+
+  materialSets MaterialSet[]
+}
+
+model Purpose {
+  id          String     @id @default(uuid())
+  key         PurposeKey @unique
+  name        String              // e.g. "Job"
+  description String
+  sortOrder   Int
+
+  materialSets MaterialSet[]
+}
+
+// MATERIAL SETS (Level x Purpose matrix)
+
+model MaterialSet {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  levelId     String
+  purposeId   String
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  level   Level   @relation(fields: [levelId], references: [id])
+  purpose Purpose @relation(fields: [purposeId], references: [id])
+
+  lessons            Lesson[]
+  writingAssignments WritingAssignment[]
+
+  @@unique([levelId, purposeId])
+  @@index([isActive])
+}
+
+// LESSONS (reading and listening content)
+
+model Lesson {
+  id               String    @id @default(uuid())
+  materialSetId    String
+  title            String
+  skill            SkillType           // READING or LISTENING
+  content          String    @db.Text  // article body or audio transcript
+  audioUrl         String?             // for listening lessons only
+  estimatedMinutes Int       @default(15)
+  sortOrder        Int       @default(0)
+  isActive         Boolean   @default(true)
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  materialSet MaterialSet @relation(fields: [materialSetId], references: [id], onDelete: Cascade)
+  questions   Question[]
+  progress    Progress[]
+
+  @@index([materialSetId])
+  @@index([skill])
+}
+
+// COMPREHENSION QUESTIONS
+
+model Question {
+  id        String       @id @default(uuid())
+  lessonId  String
+  prompt    String       @db.Text
+  type      QuestionType
+  sortOrder Int          @default(0)
+  explanation String?      @db.Text
+
+  lesson  Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  answers Answer[]
+
+  @@index([lessonId])
+}
+
+// ANSWERS (correct options for MCQ, accepted text for short answer)
+
+model Answer {
+  id         String   @id @default(uuid())
+  questionId String
+  text       String              // option text or accepted answer
+  isCorrect  Boolean  @default(false)
+  sortOrder  Int      @default(0)
+
+  question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@index([questionId])
+}
+
+// WRITING ASSIGNMENTS
+
+model WritingAssignment {
+  id            String   @id @default(uuid())
+  materialSetId String
+  title         String
+  prompt        String   @db.Text
+  minWords      Int      @default(150)
+  maxWords      Int      @default(400)
+  sortOrder     Int      @default(0)
+  isActive      Boolean  @default(true)
+  rubricMode    RubricMode @default(IELTS)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  materialSet MaterialSet  @relation(fields: [materialSetId], references: [id], onDelete: Cascade)
+  submissions Submission[]
+
+  @@index([materialSetId])
+}
+
+// WRITING SUBMISSIONS (student writing plus AI feedback)
+
+model Submission {
+  id           String    @id @default(uuid())
+  userId       String
+  assignmentId String
+  text         String    @db.Text
+  wordCount    Int
+  score        Int?                   // 0 to 100, null until graded
+  feedback     String?   @db.Text     // Claude API feedback paragraph
+  bandOverall      Float?
+  bandCriterion1   Float?
+  bandCriterion2   Float?
+  bandCriterion3   Float?
+  bandCriterion4   Float?
+  detailedFeedback String?   @db.Text
+  gradedAt     DateTime?
+  createdAt    DateTime  @default(now())
+
+  user       User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  assignment WritingAssignment @relation(fields: [assignmentId], references: [id])
+
+  @@index([userId])
+  @@index([assignmentId])
+  @@index([gradedAt])
+}
+
+// PROGRESS TRACKING (per user, per lesson)
+
+model Progress {
+  id             String    @id @default(uuid())
+  userId         String
+  lessonId       String
+  isCompleted    Boolean   @default(false)
+  correctAnswers Int       @default(0)
+  totalQuestions Int       @default(0)
+  completedAt    DateTime?
+  lastAccessedAt DateTime  @default(now())
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lesson Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, lessonId])
+  @@index([userId])
+  @@index([isCompleted])
+}
+
+model SpeakingBooking {
+  id          String                @id @default(uuid())
+  userId      String
+  teacherId   String?
+  sessionDate DateTime
+  status      SpeakingBookingStatus  @default(BOOKED)
+  createdAt   DateTime              @default(now())
+
+  user        User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  teacher     Teacher?              @relation(fields: [teacherId], references: [id])
+
+  @@index([userId])
+  @@index([teacherId])
+  @@index([sessionDate])
+}
+
+// TEACHERS (for speaking sessions)
+
+model Teacher {
+  id        String   @id @default(uuid())
+  fullName  String
+  email     String   @unique
+  bio       String   @db.Text
+  avatarUrl String?
+  zoomUrl   String?
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  scheduledClasses ScheduledClass[]
+  assignedStudents User[]            @relation("AssignedTeacher")
+  speakingBookings SpeakingBooking[]
+
+  @@index([isActive])
+}
+
+// SCHEDULED CLASSES (one on one Zoom sessions)
+
+model ScheduledClass {
+  id          String      @id @default(uuid())
+  userId      String
+  teacherId   String
+  scheduledAt DateTime
+  durationMin Int         @default(30)
+  zoomUrl     String?
+  status      ClassStatus @default(SCHEDULED)
+  notes       String?     @db.Text
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  teacher Teacher @relation(fields: [teacherId], references: [id])
+
+  @@index([userId])
+  @@index([teacherId])
+  @@index([scheduledAt])
+  @@index([status])
+}
+
+enum SpeakingBookingStatus {
+  BOOKED
+  CANCELLED
+  COMPLETED
+}
+
