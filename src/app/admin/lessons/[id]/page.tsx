@@ -76,18 +76,6 @@ export default async function AdminLessonDetailPage({ params }: Props) {
         ) : null}
       </div>
 
-      {/* Lesson body */}
-      {lesson.body ? (
-        <section className="space-y-3">
-          <h2 className="font-serif text-xl text-foreground">Content</h2>
-          <div className="rounded-2xl border border-foreground/10 bg-background p-6">
-            <p className="whitespace-pre-wrap text-sm leading-relaxed text-foreground/85">
-              {lesson.body}
-            </p>
-          </div>
-        </section>
-      ) : null}
-
       {/* Questions */}
       <section className="space-y-3">
 
