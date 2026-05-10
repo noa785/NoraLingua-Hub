@@ -24,13 +24,13 @@ import { CefrLevel, PurposeKey, SkillType } from "@/generated/prisma";
 
 export const onboardingSchema = z.object({
   level: z.nativeEnum(CefrLevel, {
-    required_error: "Please choose your level",
+    error: "Please choose your level",
   }),
   purpose: z.nativeEnum(PurposeKey, {
-    required_error: "Please choose a purpose",
+    error: "Please choose a purpose",
   }),
   targetSkill: z.nativeEnum(SkillType, {
-    required_error: "Please choose a skill",
+    error: "Please choose a skill",
   }),
 });
 
