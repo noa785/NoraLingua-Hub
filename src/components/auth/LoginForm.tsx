@@ -24,7 +24,7 @@ type LoginFormProps = {
   redirectTo: string;
 };
 
-export function LoginForm({ redirectTo }: LoginFormProps): JSX.Element {
+export function LoginForm({ redirectTo }: LoginFormProps) {
   const router = useRouter();
   const [serverError, setServerError] = useState<string | null>(null);
 

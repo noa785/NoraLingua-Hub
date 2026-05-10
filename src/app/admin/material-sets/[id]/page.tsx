@@ -1,4 +1,4 @@
-﻿import Link from "next/link";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { prisma } from "@/lib/prisma";
@@ -27,7 +27,7 @@ type Props = {
 };
 
 
-export default async function AdminMaterialSetDetailPage({ params }: Props): Promise<JSX.Element> {
+export default async function AdminMaterialSetDetailPage({ params }: Props) {
 
   const { id } = await params;
 

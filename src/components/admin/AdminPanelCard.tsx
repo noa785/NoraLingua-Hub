@@ -1,4 +1,4 @@
-﻿import Link from "next/link";
+import Link from "next/link";
 import {
   ShieldCheck,
   Users,
@@ -78,7 +78,7 @@ export function AdminPanelCard({
   teacherCount,
   bookedSessionCount,
   ungradedCount,
-}: Props): JSX.Element {
+}: Props) {
 
   /* Compute warning flags up front so the JSX stays readable.
      We separate "no teachers" (a hard operational issue: students
@@ -239,7 +239,7 @@ function Stat({
   warning?:       boolean;
   warningMessage?: string | null;
   href?:          string;
-}): JSX.Element {
+}) {
 
   /* Build the display string. customDisplay wins if provided;
      otherwise we use plain number plus the right plural noun. */

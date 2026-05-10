@@ -1,4 +1,4 @@
-﻿import Link from "next/link";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { prisma } from "@/lib/prisma";
@@ -75,7 +75,7 @@ function annotationColor(type: string): string {
 }
 
 
-export default async function AdminSubmissionDetailPage({ params }: Props): Promise<JSX.Element> {
+export default async function AdminSubmissionDetailPage({ params }: Props) {
 
   const { id } = await params;
 

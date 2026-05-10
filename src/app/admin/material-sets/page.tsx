@@ -1,4 +1,4 @@
-﻿import Link from "next/link";
+import Link from "next/link";
 
 import { prisma } from "@/lib/prisma";
 
@@ -21,7 +21,7 @@ export const metadata = {
 };
 
 
-export default async function AdminMaterialSetsPage(): Promise<JSX.Element> {
+export default async function AdminMaterialSetsPage() {
 
   const materialSets = await prisma.materialSet.findMany({
     include: {

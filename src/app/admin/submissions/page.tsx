@@ -1,4 +1,4 @@
-﻿import Link from "next/link";
+import Link from "next/link";
 
 import { prisma } from "@/lib/prisma";
 
@@ -17,7 +17,7 @@ export const metadata = {
 };
 
 
-export default async function AdminSubmissionsPage(): Promise<JSX.Element> {
+export default async function AdminSubmissionsPage() {
 
   const submissions = await prisma.submission.findMany({
     include: {

@@ -20,7 +20,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { registerSchema, type RegisterInput } from "@/lib/validations/auth";
 
-export function RegisterForm(): JSX.Element {
+export function RegisterForm() {
   const router = useRouter();
   const [serverError, setServerError] = useState<string | null>(null);
 

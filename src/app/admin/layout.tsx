@@ -1,4 +1,4 @@
-﻿import Link from "next/link";
+import Link from "next/link";
 
 import { requireAdmin } from "@/lib/auth/require-admin";
 
@@ -27,7 +27,7 @@ export default async function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
-}): Promise<JSX.Element> {
+}) {
 
   const adminUser = await requireAdmin();
 

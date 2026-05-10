@@ -1,4 +1,4 @@
-﻿import Link from "next/link";
+import Link from "next/link";
 import {
   GraduationCap,
   Users,
@@ -64,7 +64,7 @@ type Props = {
 };
 
 
-export function AdminDashboardSections({ teachers, students }: Props): JSX.Element {
+export function AdminDashboardSections({ teachers, students }: Props) {
   return (
     <>
 
@@ -145,7 +145,7 @@ export function AdminDashboardSections({ teachers, students }: Props): JSX.Eleme
   a derived completion rate. We keep the math local so the parent
   data shape stays simple primitives.
 */
-function TeacherCard({ teacher }: { teacher: TeacherRow }): JSX.Element {
+function TeacherCard({ teacher }: { teacher: TeacherRow }) {
 
   /* Completion rate is COMPLETED divided by COMPLETED + CANCELLED.
      We exclude BOOKED-but-not-yet-due sessions from the denominator
@@ -247,7 +247,7 @@ function TeacherCard({ teacher }: { teacher: TeacherRow }): JSX.Element {
   too small. Every cell is plain text, no icons, no graphics, by
   design.
 */
-function StudentsTable({ students }: { students: StudentRow[] }): JSX.Element {
+function StudentsTable({ students }: { students: StudentRow[] }) {
   return (
     <div className="overflow-hidden rounded-2xl border border-foreground/10 bg-background">
       <div className="overflow-x-auto">
@@ -339,7 +339,7 @@ function EmptyHint({
   message:  string;
   ctaHref:  string;
   ctaLabel: string;
-}): JSX.Element {
+}) {
   return (
     <div className="rounded-2xl border border-foreground/10 bg-background p-10 text-center">
       <p className="mx-auto max-w-md text-sm text-foreground/70">

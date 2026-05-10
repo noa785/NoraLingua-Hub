@@ -1,4 +1,4 @@
-﻿import { prisma } from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 
 
 /*
@@ -17,7 +17,7 @@ export const metadata = {
 };
 
 
-export default async function AdminClassesPage(): Promise<JSX.Element> {
+export default async function AdminClassesPage() {
 
   const bookings = await prisma.speakingBooking.findMany({
     include: {

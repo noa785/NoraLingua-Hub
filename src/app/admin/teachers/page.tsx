@@ -1,4 +1,4 @@
-﻿import { prisma } from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 
 
 /*
@@ -40,7 +40,7 @@ type TeacherRow = {
 };
 
 
-export default async function AdminTeachersPage(): Promise<JSX.Element> {
+export default async function AdminTeachersPage() {
 
   /* Fetch all teachers with relation counts. We compute booking
      counts grouped by status separately because Prisma _count

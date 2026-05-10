@@ -1,4 +1,4 @@
-﻿import Link from "next/link";
+import Link from "next/link";
 
 import { prisma } from "@/lib/prisma";
 
@@ -18,7 +18,7 @@ export const metadata = {
 };
 
 
-export default async function AdminLessonsPage(): Promise<JSX.Element> {
+export default async function AdminLessonsPage() {
 
   const lessons = await prisma.lesson.findMany({
     include: {

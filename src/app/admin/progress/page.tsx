@@ -1,4 +1,4 @@
-﻿import { prisma } from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 
 
 /*
@@ -21,7 +21,7 @@ export const metadata = {
 };
 
 
-export default async function AdminProgressPage(): Promise<JSX.Element> {
+export default async function AdminProgressPage() {
 
   const progress = await prisma.progress.findMany({
     include: {
