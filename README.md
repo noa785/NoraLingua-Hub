@@ -4,12 +4,11 @@
 
 **Author:** Nora Aldossari
 **Year:** 2026
-**Course:** CS50x, Harvard Extension School
+**Course:** CSCI E-50, Harvard Extension School
 **Concentration:** Computer Science
 **Location:** Riyadh, Saudi Arabia
 
-**Live demo:** _(to be added after Vercel deployment)_
-**Video demo:** _(YouTube link to be added before submission)_
+**Video demo:** [https://youtu.be/yb8lrP7Impw](https://youtu.be/yb8lrP7Impw)
 
 ---
 
@@ -49,26 +48,9 @@ The project was built from scratch over several months as a demonstration of ful
 
 ## Live Preview
 
-You can either:
+To run the project locally, follow [Getting Started](#getting-started) below.
 
-- **Visit the live deployment** at `_<vercel-url-pending>_` (no installation required), or
-- **Run locally** by following [Getting Started](#getting-started) below.
-
-<!--
-  Screenshots to be added before submission. The screenshots/ folder
-  contains the actual image files; this table references them.
--->
-
-| Page | Screenshot |
-|---|---|
-| Onboarding (3-step CEFR + purpose + skill selection) | `_screenshot pending_` |
-| Student dashboard with skill mastery rings | `_screenshot pending_` |
-| Reading lesson with comprehension questions | `_screenshot pending_` |
-| Listening lesson with audio player | `_screenshot pending_` |
-| Writing assignment with prompt and word count | `_screenshot pending_` |
-| AI-graded feedback (IELTS bands + Band 9 rewrite) | `_screenshot pending_` |
-| Speaking session booking | `_screenshot pending_` |
-| Admin dashboard | `_screenshot pending_` |
+The full demo walkthrough is available on YouTube: [https://youtu.be/yb8lrP7Impw](https://youtu.be/yb8lrP7Impw)
 
 ---
 
@@ -396,7 +378,7 @@ A single verified account that we know works is more reliable than a long list o
 
 The 3-minute demo video walks through:
 
-1. **Project introduction** (0:00 - 0:30): title, author (Nora Aldossari), year (2026), CS50x affiliation, Computer Science concentration, location (Riyadh, Saudi Arabia)
+1. **Project introduction** (0:00 - 0:30): title, author (Nora Aldossari), year (2026), CSCI E-50 affiliation, Computer Science concentration, location (Riyadh, Saudi Arabia)
 2. **The problem** (0:30 - 1:00): why personalized language learning matters, why level + purpose combinations are necessary
 3. **Live demo** (1:00 - 2:30): walking through the student journey using `b2univ@test.com`:
    - Dashboard with skill rings
@@ -455,14 +437,13 @@ A few highlights:
 
 - The video demo is uploaded to YouTube as **unlisted** and linked at the top of this README.
 - The Gradescope zip excludes `node_modules`, `.next`, `.env`, and any backup folders.
-- The live deployment URL (Vercel) is also linked at the top for graders who prefer to test without local installation.
 - The verified test account and a register-fallback option are provided in the [Test Accounts](#test-accounts-for-graders) section.
 
 ---
 
 ## Acknowledgements
 
-This project was built as the final project for **CS50x at Harvard Extension School (2026)**. CS50 gave me the structured foundation to grow from beginner to building production-grade full-stack systems.
+This project was built as the final project for **CSCI E-50 at Harvard Extension School (2026)**. The course gave me the structured foundation to grow from beginner to building production-grade full-stack systems.
 
 Special thanks to David Malan, Carter Zenke, and the CS50 staff for designing a course that demands genuine effort and rewards it with real understanding.
 
