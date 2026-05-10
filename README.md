@@ -309,6 +309,8 @@ Find Supabase credentials in **Settings -> API**. Find Anthropic key at [console
 
 ## Test Accounts for Graders
 
+> **For graders:** The fastest way to test this project is via the live deployment at **[nora-lingua-hub.vercel.app](https://nora-lingua-hub.vercel.app)**. The test accounts below work directly there - no installation needed. Local installation is only required if you want to inspect or modify the code.
+
 > **Note:** This is a sandbox account seeded specifically for grading. It contains no real personal data.
 
 A verified test account is provided below. It is signed up at the **B2 + University** path, which is the largest seeded track (10 lessons + 4 writing assignments) and includes a previously graded writing submission so you can immediately see the AI feedback flow.
